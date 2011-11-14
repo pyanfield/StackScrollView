@@ -48,6 +48,7 @@
 
 
 @implementation UIViewExt
+//这里自定义了UIView的 hitTest:withEvent: 方法。
 - (UIView *) hitTest: (CGPoint) pt withEvent: (UIEvent *) event 
 {   
 	
@@ -101,8 +102,12 @@
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+
+//在这里 rootView作为一个最底层的视图层，而上面是 leftMenuView 和 rightSlideView 这两个图层， leftMenuView 加载了 MenuViewController视图
+//rightSlideView加载了 StackScrollViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
+    	// UIViewExt是UIView自定义的一个子类，并且已经重载了 hitTest:withEvent:事件
 	rootView = [[UIViewExt alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
 	rootView.autoresizingMask = UIViewAutoresizingFlexibleWidth + UIViewAutoresizingFlexibleHeight;
 	[rootView setBackgroundColor:[UIColor clearColor]];
