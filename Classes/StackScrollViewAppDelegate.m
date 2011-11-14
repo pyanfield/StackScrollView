@@ -44,8 +44,9 @@
 @synthesize rootViewController;
 
 
-
+//这里是程序的调用入口，在这里UIApplicationMain将调用这个StackScrollViewAppDelegate的单例调用
 + (StackScrollViewAppDelegate *) instance {
+	//通过sharedApplication来返回应用程序的实例
 	return (StackScrollViewAppDelegate *) [[UIApplication sharedApplication] delegate];
 }
 
@@ -54,7 +55,7 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-
+	//入口
 	rootViewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
 	[self.window setBackgroundColor:[UIColor clearColor]];
     [self.window addSubview:rootViewController.view];
