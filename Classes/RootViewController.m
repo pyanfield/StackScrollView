@@ -54,11 +54,11 @@
 	
 	UIView* viewToReturn=nil;
 	CGPoint pointToReturn;
-	
+	// rootView - > rightSlideView
 	UIView* uiRightView = (UIView*)[[self subviews] objectAtIndex:1];
 	
 	if ([[uiRightView subviews] objectAtIndex:0]) {
-		
+		// rootView -> rightSlideView -> stackScrollViewController
 		UIView* uiStackScrollView = [[uiRightView subviews] objectAtIndex:0];	
 		
 		if ([[uiStackScrollView subviews] objectAtIndex:1]) {	 
