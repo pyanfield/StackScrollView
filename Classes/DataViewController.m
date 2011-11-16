@@ -41,6 +41,7 @@
 #import "RootViewController.h"
 #import "StackScrollViewController.h"
 
+//主要实现了，当点击左侧Table的时候，显示在右侧rightSlideView中的，通过TableView来显示的数据
 @implementation DataViewController
 @synthesize tableView = _tableView;
 
