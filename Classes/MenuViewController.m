@@ -48,26 +48,31 @@
 
 #pragma mark -
 #pragma mark View lifecycle
-
+// 在生成 UIView的时候，默认的初始化方法是 initWithFrame，所以在这覆盖这个方法，自定义方法实现
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super init]) {
 		[self.view setFrame:frame]; 
-		
+		//初始化位置和大小
+		//初始化设置UITableView
+
 		_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStylePlain];
 		[_tableView setDelegate:self];
 		[_tableView setDataSource:self];
 		[_tableView setBackgroundColor:[UIColor clearColor]];
         
-        UIView* footerView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 1)];
+        UIView* footerView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 5)];
+        	 footerView.backgroundColor = [UIColor redColor];
+                //初始化设置UITableView的 tableFooterView,这里要区别与section footer view
 		_tableView.tableFooterView = footerView;
         [footerView release];
         
 		[self.view addSubview:_tableView];
-		
+		//绘制UITableView右边的白线
 		UIView* verticalLineView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width, -5, 1, self.view.frame.size.height)];
 		[verticalLineView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
 		[verticalLineView setBackgroundColor:[UIColor whiteColor]];
 		[self.view addSubview:verticalLineView];
+		//将白线移动到上面来
 		[self.view bringSubviewToFront:verticalLineView];
         [verticalLineView release];
 		
@@ -123,6 +128,7 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		UIView* bgView = [[[UIView alloc] init] autorelease];
+		        //设置选择Cell之后的背景颜色
 		[bgView setBackgroundColor:[UIColor colorWithWhite:2 alpha:0.2]];
 		[cell setSelectedBackgroundView:bgView];
     }
