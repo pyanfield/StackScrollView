@@ -51,11 +51,14 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 	if(self= [super init]) {
 		
 		viewControllersStack = [[NSMutableArray alloc] init]; 
+		//---------------------------------------
 		borderViews = [[UIView alloc] initWithFrame:CGRectMake(SLIDE_VIEWS_MINUS_X_POSITION - 2, -2, 2, self.view.frame.size.height)];
 		[borderViews setBackgroundColor:[UIColor clearColor]];
 		UIView* verticalLineView1 = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, borderViews.frame.size.height)] autorelease];
 		[verticalLineView1 setBackgroundColor:[UIColor whiteColor]];
+		//注意这里设置了 tag
 		[verticalLineView1 setTag:1];
+		//隐藏了，让其显示出来，看看是在那创建的view
 		[verticalLineView1 setHidden:TRUE];
 		[borderViews addSubview:verticalLineView1];
 		
@@ -66,8 +69,9 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 		[borderViews addSubview:verticalLineView2];
 		
 		[self.view addSubview:borderViews];
-		
+		//------------------------------------------
 		slideViews = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+		//NSLog(@">> slideView of StackScrollView width %d",self.view.frame.size.width);
 		[slideViews setBackgroundColor:[UIColor clearColor]];
 		[self.view setBackgroundColor:[UIColor clearColor]];
 		[self.view setFrame:slideViews.frame];
@@ -83,7 +87,7 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 		viewAtRight=nil;
 		viewAtRight2=nil;
 		viewAtRightAtTouchBegan = nil;
-		
+		//设置手指滑动事件，调用触发 handlePanFrom:
 		UIPanGestureRecognizer* panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)];
 		[panRecognizer setMaximumNumberOfTouches:1];
 		[panRecognizer setDelaysTouchesBegan:TRUE];
