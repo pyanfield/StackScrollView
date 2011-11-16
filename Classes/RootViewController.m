@@ -107,11 +107,12 @@
 //rightSlideView加载了 StackScrollViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    	// UIViewExt是UIView自定义的一个子类，并且已经重载了 hitTest:withEvent:事件
+    // UIViewExt是UIView自定义的一个子类，并且已经重载了 hitTest:withEvent:事件
 	rootView = [[UIViewExt alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
 	rootView.autoresizingMask = UIViewAutoresizingFlexibleWidth + UIViewAutoresizingFlexibleHeight;
 	[rootView setBackgroundColor:[UIColor clearColor]];
-	    //在rootView中设置一个leftMenuView，在这个里面去加载MenuViewController的实例
+    
+    //在rootView中设置一个leftMenuView，在这个里面去加载MenuViewController的实例
 	leftMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, self.view.frame.size.height)];
 	leftMenuView.autoresizingMask = UIViewAutoresizingFlexibleHeight;	
 	menuViewController = [[MenuViewController alloc] initWithFrame:CGRectMake(0, 0, leftMenuView.frame.size.width, leftMenuView.frame.size.height)];
@@ -119,7 +120,8 @@
 	[menuViewController viewWillAppear:FALSE];
 	[menuViewController viewDidAppear:FALSE];
 	[leftMenuView addSubview:menuViewController.view];
-	    //建立一个rightSlideView用来加载 StackScrollViewController 的实例
+    
+    //建立一个rightSlideView用来加载 StackScrollViewController 的实例
 	rightSlideView = [[UIView alloc] initWithFrame:CGRectMake(leftMenuView.frame.size.width, 0, rootView.frame.size.width - leftMenuView.frame.size.width, rootView.frame.size.height)];
 	rightSlideView.autoresizingMask = UIViewAutoresizingFlexibleWidth + UIViewAutoresizingFlexibleHeight;
 	stackScrollViewController = [[StackScrollViewController alloc] init];	

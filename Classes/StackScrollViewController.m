@@ -59,21 +59,23 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 		//注意这里设置了 tag
 		[verticalLineView1 setTag:1];
 		//隐藏了，让其显示出来，看看是在那创建的view
-		[verticalLineView1 setHidden:TRUE];
+		//[verticalLineView1 setHidden:TRUE];
 		[borderViews addSubview:verticalLineView1];
-		
 		UIView* verticalLineView2 = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 2, borderViews.frame.size.height)] autorelease];
-		[verticalLineView2 setBackgroundColor:[UIColor grayColor]];
+		[verticalLineView2 setBackgroundColor:[UIColor blackColor]];
 		[verticalLineView2 setTag:2];
-		[verticalLineView2 setHidden:TRUE];		
+		//[verticalLineView2 setHidden:TRUE];		
 		[borderViews addSubview:verticalLineView2];
-		
 		[self.view addSubview:borderViews];
 		//------------------------------------------
+
 		slideViews = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-		//NSLog(@">> slideView of StackScrollView width %d",self.view.frame.size.width);
-		[slideViews setBackgroundColor:[UIColor clearColor]];
-		[self.view setBackgroundColor:[UIColor clearColor]];
+		//NSLog(@">> slideView of StackScrollView width %f", self.view.frame.size.width);   
+        //NSLog(@">> slideView of StackScrollView height %f", self.view.frame.size.height);
+		// output is 768x1004
+        //修改颜色看看是什么样子的
+        [slideViews setBackgroundColor:[UIColor clearColor]];
+		[self.view setBackgroundColor:[UIColor orangeColor]];
 		[self.view setFrame:slideViews.frame];
 		self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 		viewXPosition = 0;
@@ -129,8 +131,9 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 	}
 }
 
-
+//手指拖拽时触发
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer {
+    NSLog(@">>Pan action now");
 	
 	CGPoint translatedPoint = [recognizer translationInView:self.view];
 	
@@ -518,7 +521,7 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 }
 
 - (void)bounceBack:(NSString*)animationID finished:(NSNumber*)finished context:(void*)context {	
-	
+    NSLog(@">>bounceBack action");
 	BOOL isBouncing = FALSE;
 	
 	if([dragDirection isEqualToString:@""] && [finished boolValue]){
@@ -654,25 +657,29 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 }
-
+//点击table view，增加视图，如果设置 isStackStartView为TRUE/YES，将这个view设置到第一个位置，并且删除其他的view.
 - (void)addViewInSlider:(UIViewController*)controller invokeByController:(UIViewController*)invokeByController isStackStartView:(BOOL)isStackStartView{
-		
+	NSLog(@">>addViewInSlider ");	
 	if (isStackStartView) {
 		slideStartPosition = SLIDE_VIEWS_START_X_POS;
 		viewXPosition = slideStartPosition;
 		
+        //删除slideViews所有的子视图
 		for (UIView* subview in [slideViews subviews]) {
 			[subview removeFromSuperview];
 		}
 		
-		[[borderViews viewWithTag:3] setHidden:TRUE];
-		[[borderViews viewWithTag:2] setHidden:TRUE];
-		[[borderViews viewWithTag:1] setHidden:TRUE];
+		//[[borderViews viewWithTag:3] setHidden:TRUE];
+		//[[borderViews viewWithTag:2] setHidden:TRUE];
+		//[[borderViews viewWithTag:1] setHidden:TRUE];
+        
+        //清空viewControllersStack
 		[viewControllersStack removeAllObjects];
 	}
 	
-	
+    NSLog(@">>>>VIEWCONTROLLERSSTACK COUNT %D",[viewControllersStack count]);
 	if([viewControllersStack count] > 1){
+
 		NSInteger indexOfViewController = [viewControllersStack
 										   indexOfObject:invokeByController]+1;
 		
@@ -691,11 +698,12 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 		for (UIView* subview in [slideViews subviews]) {
 			[subview removeFromSuperview];
 		}		[viewControllersStack removeAllObjects];
-		[[borderViews viewWithTag:3] setHidden:TRUE];
-		[[borderViews viewWithTag:2] setHidden:TRUE];
-		[[borderViews viewWithTag:1] setHidden:TRUE];
+//		[[borderViews viewWithTag:3] setHidden:TRUE];
+//		[[borderViews viewWithTag:2] setHidden:TRUE];
+//		[[borderViews viewWithTag:1] setHidden:TRUE];
 	}
 	
+    NSLog(@">>>>>>>SUBVIEWS COUNT %D",[slideViews.subviews count]);
 	if ([slideViews.subviews count] != 0) {
 		UIViewWithShadow* verticalLineView = [[[UIViewWithShadow alloc] initWithFrame:CGRectMake(-40, 0, 40 , self.view.frame.size.height)] autorelease];
 		[verticalLineView setBackgroundColor:[UIColor clearColor]];
