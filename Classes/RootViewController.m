@@ -62,7 +62,7 @@
 		UIView* uiStackScrollView = [[uiRightView subviews] objectAtIndex:0];	
 		
 		if ([[uiStackScrollView subviews] objectAtIndex:1]) {	 
-			
+			//rootView -> rightSlideView -> stackScrollViewController -> slideViews
 			UIView* uiSlideView = [[uiStackScrollView subviews] objectAtIndex:1];	
 			
 			for (UIView* subView in [uiSlideView subviews]) {
