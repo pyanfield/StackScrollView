@@ -56,6 +56,20 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
 	//入口
+/*我们将创建一个这样的视图结构：
+
+-window
+----rootView  : RootViewController
+---------leftMenuView
+----------------menuViewController  :  MenuViewController
+---------rightSlideView
+----------------stackScrollViewController  :  StackScrollViewController
+------------------------slideViews
+--------------------------------verticalLineView1
+--------------------------------verticalLineView2
+------------------------slideViews
+
+*/
 	rootViewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
 	[self.window setBackgroundColor:[UIColor clearColor]];
     [self.window addSubview:rootViewController.view];
