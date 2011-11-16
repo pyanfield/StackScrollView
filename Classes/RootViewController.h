@@ -37,6 +37,11 @@
 //
 
 #import <UIKit/UIKit.h>
+/*  此类为本程序的最底层的view，这个view为windows里面的root view.
+*   这个 leftMenuView and rightSlideView as the subview of rootView.
+*   They include the instance of MenuViewController and StackScrollViewController
+*
+*/
 
 
 @class MenuViewController;
