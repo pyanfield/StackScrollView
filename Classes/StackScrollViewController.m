@@ -659,13 +659,16 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 }
 //点击table view，增加视图，如果设置 isStackStartView为TRUE/YES，将这个view设置到第一个位置，并且删除其他的view.
 - (void)addViewInSlider:(UIViewController*)controller invokeByController:(UIViewController*)invokeByController isStackStartView:(BOOL)isStackStartView{
-	NSLog(@">>addViewInSlider ");	
+	NSLog(@">>addViewInSlider ");
+	// 如果 isStackStartView == YES/TRUE,那么 [slideViews.subviews count] == 0 , [viewControllersStack count]==0
+	// MenuViewController里面触发的addViewInSlider，isStackStartView是TRUE,而StackScrollViewController里面的slideViews是False.
 	if (isStackStartView) {
 		slideStartPosition = SLIDE_VIEWS_START_X_POS;
 		viewXPosition = slideStartPosition;
 		
         //删除slideViews所有的子视图
 		for (UIView* subview in [slideViews subviews]) {
+			// removeFromSuperview
 			[subview removeFromSuperview];
 		}
 		
@@ -673,7 +676,7 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 		//[[borderViews viewWithTag:2] setHidden:TRUE];
 		//[[borderViews viewWithTag:1] setHidden:TRUE];
         
-        //清空viewControllersStack
+        //清空viewControllersStack，这个时候 [viewControllersStack count] == 0
 		[viewControllersStack removeAllObjects];
 	}
 	
@@ -695,6 +698,7 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 			viewXPosition = self.view.frame.size.width - [controller view].frame.size.width;
 		}
 	}else if([viewControllersStack count] == 0) {
+		//如果是在MenuViewController的table view里面点击cell事件，肯定会调用这里
 		for (UIView* subview in [slideViews subviews]) {
 			[subview removeFromSuperview];
 		}		[viewControllersStack removeAllObjects];
@@ -704,8 +708,10 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 	}
 	
     NSLog(@">>>>>>>SUBVIEWS COUNT %D",[slideViews.subviews count]);
+    	//设置阴影
 	if ([slideViews.subviews count] != 0) {
 		UIViewWithShadow* verticalLineView = [[[UIViewWithShadow alloc] initWithFrame:CGRectMake(-40, 0, 40 , self.view.frame.size.height)] autorelease];
+		//修改Shadow的颜色试试
 		[verticalLineView setBackgroundColor:[UIColor clearColor]];
 		[verticalLineView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
 		[verticalLineView setClipsToBounds:NO];
@@ -713,15 +719,19 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 	}
 	
 	[viewControllersStack addObject:controller];
+	
 	if (invokeByController !=nil) {
+		//设置添加的view的起始坐标点，如果是在MenuViewCOntroller触发的话，则在MenuViewController后面
+		//如果是StackScrollViewController里面的DataViewController触发的话，则是在那个DataViewController的后面
 		viewXPosition = invokeByController.view.frame.origin.x + invokeByController.view.frame.size.width;			
 	}
+	//如果slideViews里面没有view的话，新的view的其实坐标将是SLIDE_VIEWS_START_X_POS
 	if ([[slideViews subviews] count] == 0) {
 		slideStartPosition = SLIDE_VIEWS_START_X_POS;
 		viewXPosition = slideStartPosition;
 	}
+	//将新添加的view添加到slideViews里面去
 	[[controller view] setFrame:CGRectMake(viewXPosition, 0, [controller view].frame.size.width, self.view.frame.size.height)];
-	
 	[controller.view setTag:([viewControllersStack count]-1)];
 	[controller viewWillAppear:FALSE];
 	[controller viewDidAppear:FALSE];
@@ -729,19 +739,21 @@ const NSInteger SLIDE_VIEWS_START_X_POS = 0;
 	
 	
 	if ([[slideViews subviews] count] > 0) {
-		
 		if ([[slideViews subviews] count]==1) {
-			viewAtLeft = [[slideViews subviews] objectAtIndex:[[slideViews subviews] count]-1];
+			//viewAtLeft = [[slideViews subviews] objectAtIndex:[[slideViews subviews] count]-1];
+			viewAtLeft = [[slideViews subviews] objectAtIndex:0];
 			viewAtLeft2 = nil;
 			viewAtRight = nil;
 			viewAtRight2 = nil;
 			
 		}else if ([[slideViews subviews] count]==2){
-			viewAtRight = [[slideViews subviews] objectAtIndex:[[slideViews subviews] count]-1];
-			viewAtLeft = [[slideViews subviews] objectAtIndex:[[slideViews subviews] count]-2];
+			//viewAtRight = [[slideViews subviews] objectAtIndex:[[slideViews subviews] count]-1];
+			//viewAtLeft = [[slideViews subviews] objectAtIndex:[[slideViews subviews] count]-2];
+			viewAtRight = [[slideViews subviews] objectAtIndex:1];
+			viewAtLeft = [[slideViews subviews] objectAtIndex:0];
 			viewAtLeft2 = nil;
 			viewAtRight2 = nil;
-			
+			//两个view的移动动画，在iOS4及其以后版本中，不鼓励使用Begin/commit 方法，鼓励使用Block-Based方法
 			[UIView beginAnimations:nil context:NULL];
 			[UIView setAnimationTransition:UIViewAnimationTransitionNone forView:viewAtLeft cache:YES];	
 			[UIView setAnimationBeginsFromCurrentState:NO];	
